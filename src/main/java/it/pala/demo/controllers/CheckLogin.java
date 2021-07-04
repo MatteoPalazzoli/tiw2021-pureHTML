@@ -17,7 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
-@WebServlet(name = "checkLogin", value = "/CheckLogin")
+@WebServlet("/CheckLogin")
 public class CheckLogin extends HttpServlet {
     private String message;
     private Connection connection;
@@ -42,12 +42,7 @@ public class CheckLogin extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
-
-        // Hello
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>" + message + "</h1>");
-        out.println("</body></html>");
+        response.getWriter().println("<html><body><h1> get request</h1></body></html>");
     }
 
     @Override
@@ -82,7 +77,7 @@ public class CheckLogin extends HttpServlet {
         }
 
         request.getSession().setAttribute("user", user);
-        response.sendRedirect(getServletContext().getContextPath()+"/home.html");
+        response.sendRedirect(getServletContext().getContextPath()+"/Home");
     }
 
     public void destroy() {
