@@ -6,7 +6,7 @@
     <display-name>demo</display-name>
     <context-param>
         <param-name>dbUrl</param-name>
-        <param-value>jdbc:mysql://localhost:3306/db_gestione_spese</param-value>
+        <param-value>jdbc:mysql://localhost:3306/db_categories</param-value>
     </context-param>
     <context-param>
         <param-name>dbUser</param-name>

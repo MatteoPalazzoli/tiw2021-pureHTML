@@ -1,5 +1,7 @@
 package it.pala.demo.dao;
 
+import it.pala.demo.Exceptions.WrongUserException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,21 +14,17 @@ public class UserDAO {
         this.con = connection;
     }
 
-    public String checkCredentials(String username, String pwd) throws SQLException {
-        String query = "SELECT  id, username, name, surname FROM user WHERE username = ? AND password = ?";
+    public String checkCredentials(String username, String pwd) throws SQLException, WrongUserException {
+        String query = "SELECT  username, password, name FROM user WHERE Username = ? AND Password = ?";
         try (PreparedStatement pstatement = con.prepareStatement(query)) {
             pstatement.setString(1, username);
             pstatement.setString(2, pwd);
-            try (ResultSet result = pstatement.executeQuery()) {
-                if (!result.isBeforeFirst()) // no results, credential check failed
-                    return "check failed";
-                else {
-                    result.next();
-                    return result.getInt("id")+" "
-                            +result.getString("username")+" "
-                            +result.getString("name")+" "
-                            +result.getString("surname");
-                }
+            ResultSet result = pstatement.executeQuery();
+            if (!result.isBeforeFirst()) // no results, credential check failed
+                throw new WrongUserException();
+            else {
+                result.next();
+                return result.getString("name");
             }
         }
     }

@@ -1,5 +1,6 @@
 package it.pala.demo.controllers;
 
+import it.pala.demo.Exceptions.WrongUserException;
 import it.pala.demo.dao.UserDAO;
 import it.pala.demo.utils.ConnectionHandler;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -55,13 +56,11 @@ public class CheckLogin extends HttpServlet {
         PrintWriter out = response.getWriter();
         out.println();
 
-        // obtain and escape params
-        String usrn = null;
-        String pwd = null;
+        String user, pwd;
         try {
-            usrn = StringEscapeUtils.escapeJava(request.getParameter("user"));
+            user = StringEscapeUtils.escapeJava(request.getParameter("user"));
             pwd = StringEscapeUtils.escapeJava(request.getParameter("password"));
-            if (usrn == null || pwd == null || usrn.isEmpty() || pwd.isEmpty()) {
+            if (user == null || pwd == null || user.isEmpty() || pwd.isEmpty()) {
                 message = "Missing or empty credential value";
             }
         } catch (Exception e) {
@@ -73,17 +72,17 @@ public class CheckLogin extends HttpServlet {
         // query db to authenticate for user
         UserDAO userDao = new UserDAO(connection);
         try {
-            message = userDao.checkCredentials(usrn, pwd);
+            message = userDao.checkCredentials(user, pwd);
         } catch (SQLException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not Possible to check credentials");
+        } catch (WrongUserException e){
+            final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
+            ctx.setVariable("errorMessage", "Incorrect username or password");
+            templateEngine.process("/index.html", ctx, response.getWriter());
         }
-        request.getSession().setAttribute("user", usrn);
 
-        out.println(message + "</p></body></html>");
-
-        final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
-        ctx.setVariable("errorMsg", "Incorrect username or password");
-        templateEngine.process("/home.html", ctx, response.getWriter());
+        request.getSession().setAttribute("user", user);
+        response.sendRedirect(getServletContext().getContextPath()+"/home.html");
     }
 
     public void destroy() {
