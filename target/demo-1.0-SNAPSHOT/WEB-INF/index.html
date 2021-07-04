@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="it">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Demo check</title>
 </head>
 <body>
-<h1>Hello World!</h1>
+<h1 th:text="#{index.welcome}">Hello World!</h1>
 <br/>
 <a href="hello-servlet">Hello Servlet</a>
 <form action="hello-servlet" method="POST">
