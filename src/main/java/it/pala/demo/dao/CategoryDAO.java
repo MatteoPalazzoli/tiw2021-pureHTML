@@ -1,5 +1,6 @@
 package it.pala.demo.dao;
 
+import it.pala.demo.Exceptions.NoSuchCategoryException;
 import it.pala.demo.beans.Category;
 
 import java.sql.*;
@@ -19,7 +20,7 @@ public class CategoryDAO {
      * @return Category's ID
      * @throws SQLException if there is a database error
      */
-    public String findID(String name) throws SQLException {
+    public String findID(String name) throws NoSuchCategoryException {
         String query = "SELECT ID FROM category WHERE Name = ?";
         try (PreparedStatement pStatement = connection.prepareStatement(query)) {
             pStatement.setString(1, name);
@@ -27,24 +28,25 @@ public class CategoryDAO {
                 result.next();
                 return result.getString("ID");
             }
+        } catch (SQLException e){
+            throw new NoSuchCategoryException("Category "+name+" doesn't exists.");
         }
     }
 
-    public String findNextIdByFather(String father) throws SQLException {
-        String query = "SELECT CAST(" +
-                "(SELECT MAX(ID) FROM category WHERE ID LIKE CONCAT(" +
-                "(SELECT ID FROM category WHERE Name = ?), \"_\"" +
-                ")) AS UNSIGNED) + 1 AS LastChildID";
-        ResultSet result;
-        try (PreparedStatement pStatement = connection.prepareStatement(query)) {
+    public String findNextIdByFather(String father) throws SQLException, NoSuchCategoryException {
+        String subQuery = "(SELECT ID FROM category WHERE Name = ?)";
+        try (PreparedStatement pStatement = connection.prepareStatement(subQuery)) {
             pStatement.setString(1, father);
-            result = pStatement.executeQuery(query);
+            subQuery = pStatement.toString().substring(43);
         }
-        if(result.isBeforeFirst()){
-            return findID(father)+"1";
+        String query = "SELECT CAST((SELECT MAX(ID) FROM category WHERE ID LIKE CONCAT("+subQuery+", \"_\")) AS UNSIGNED) + 1 AS NextChildID";
+        ResultSet result;
+        try (Statement statement = connection.prepareStatement(query)) {
+            result = statement.executeQuery(query);
+            result.next();
+            String id = result.getString("NextChildID");
+            return id==null ? findID(father)+"1" : id;
         }
-        result.next();
-        return result.getString("LastChildID");
     }
 
     /**
@@ -68,13 +70,13 @@ public class CategoryDAO {
         return categories;
     }
 
-    public void createCategory(String name, String father) throws SQLException{
+    public void createCategory(String name, String father) throws SQLException, NoSuchCategoryException {
         String query = "INSERT INTO category (ID, Name, Father) VALUES (?, ?, ?)";
         try(PreparedStatement pStatement = connection.prepareStatement(query)){
             pStatement.setString(1, findNextIdByFather(father));
             pStatement.setString(2, name);
             pStatement.setString(3, father);
-            pStatement.executeQuery();
+            pStatement.executeUpdate();
         }
     }
 }

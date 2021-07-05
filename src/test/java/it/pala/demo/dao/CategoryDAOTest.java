@@ -1,7 +1,7 @@
 package it.pala.demo.dao;
 
+import it.pala.demo.Exceptions.NoSuchCategoryException;
 import it.pala.demo.beans.Category;
-import it.pala.demo.utils.ConnectionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -48,5 +48,32 @@ class CategoryDAOTest {
         for(Category c : categories){
             System.out.println(c.getSpaces()+c.toString());
         }
+    }
+
+    @Test
+    void addNotFirst(){
+        try {
+            new CategoryDAO(connection).createCategory("Pasta", "Food");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    void addFirst(){
+        try {
+            new CategoryDAO(connection).createCategory("F40", "Ferrari");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    void findInvalidID(){
+        assertThrows(NoSuchCategoryException.class, () -> new CategoryDAO(connection).findID("Apes"));
     }
 }
