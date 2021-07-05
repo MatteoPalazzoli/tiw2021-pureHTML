@@ -1,5 +1,6 @@
 package it.pala.demo.dao;
 
+import it.pala.demo.Exceptions.DuplicateCategoryException;
 import it.pala.demo.Exceptions.NoSuchCategoryException;
 import it.pala.demo.beans.Category;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,7 +55,7 @@ class CategoryDAOTest {
     void addNotFirst(){
         try {
             new CategoryDAO(connection).createCategory("Pasta", "Food");
-        } catch (SQLException | NoSuchCategoryException e) {
+        } catch (SQLException | NoSuchCategoryException | DuplicateCategoryException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
             fail();
@@ -65,7 +66,7 @@ class CategoryDAOTest {
     void addFirst(){
         try {
             new CategoryDAO(connection).createCategory("F40", "Ferrari");
-        } catch (SQLException | NoSuchCategoryException e) {
+        } catch (SQLException | NoSuchCategoryException | DuplicateCategoryException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
             fail();

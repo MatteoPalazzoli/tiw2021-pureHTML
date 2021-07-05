@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Move to...</title>
+</head>
+<body>
+<h1>Move a category</h1>
+<table>
+    <tbody>
+    <tr th:each="c : ${tree}">
+        <td th:text="${c.getSpaces()} + ${c.getId()} + ${c.getName()}">
+            <div th:if="${c.getName() != name}" th:href="@{/MoveTo(toname=${c.getName()})}"> > move here...</div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p th:text="${errorMessage}"></p>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package it.pala.demo.dao;
 
+import it.pala.demo.Exceptions.DuplicateCategoryException;
 import it.pala.demo.Exceptions.NoSuchCategoryException;
 import it.pala.demo.beans.Category;
 
@@ -70,13 +71,24 @@ public class CategoryDAO {
         return categories;
     }
 
-    public void createCategory(String name, String father) throws SQLException, NoSuchCategoryException {
+    public void createCategory(String name, String father) throws SQLException, NoSuchCategoryException, DuplicateCategoryException {
         String query = "INSERT INTO category (ID, Name, Father) VALUES (?, ?, ?)";
+        if(isPresent(name)) throw new DuplicateCategoryException();
         try(PreparedStatement pStatement = connection.prepareStatement(query)){
             pStatement.setString(1, findNextIdByFather(father));
             pStatement.setString(2, name);
             pStatement.setString(3, father);
             pStatement.executeUpdate();
+        }
+    }
+
+    private boolean isPresent(String name) throws SQLException {
+        String query = "SELECT * FROM category WHERE Name = ?";
+        ResultSet set;
+        try(PreparedStatement s = connection.prepareStatement(query)){
+            s.setString(1, name);
+            set = s.executeQuery();
+            return set.next();
         }
     }
 }

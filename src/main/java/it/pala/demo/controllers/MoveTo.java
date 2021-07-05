@@ -13,14 +13,15 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(name="GoToHomePage", value="/Home")
-public class GoToHome extends Controller {
+@WebServlet(name="MoveTo", value="/MoveTo")
+public class MoveTo extends Controller {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if(!SessionChecker.isLogged(request.getSession())){
             response.sendRedirect( getServletContext().getContextPath()+LOGIN_PAGE);
         }
+        String name = request.getParameter("name");
 
         CategoryDAO dao = new CategoryDAO(connection);
         List<Category> categories;
@@ -34,11 +35,13 @@ public class GoToHome extends Controller {
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         ctx.setVariable("tree", categories);
-        templateEngine.process("/home.html", ctx, response.getWriter());
+        ctx.setVariable("name", name);
+        templateEngine.process("/moveto.html", ctx, response.getWriter());
+
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        doGet(request, response);
+    public void doPost(HttpServletRequest request, HttpServletResponse response){
+
     }
 }

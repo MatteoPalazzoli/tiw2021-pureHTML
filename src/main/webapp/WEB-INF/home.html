@@ -10,11 +10,14 @@
     <table>
         <tbody>
             <tr th:each="c : ${tree}">
-                <td th:text="${c.getSpaces()} + ${c.getId()} + ${c.getName()}"></td>
+                <td th:text="${c.getSpaces()} + ${c.getId()} + ${c.getName()}">
+                    <span th:href="@{/MoveTo(name=${c.getName()})}"> > move to...</span>
+                </td>
             </tr>
         </tbody>
     </table>
 
+    <p th:text="${errorMessage}"></p>
     <form action="AddCategory" method="POST">
         <label for="name">New category's name: </label>
         <input type="text" name="name" id="name" placeholder="Category's name">
