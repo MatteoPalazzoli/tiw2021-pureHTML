@@ -91,4 +91,49 @@ public class CategoryDAO {
             return set.next();
         }
     }
+
+    /**
+     * Returns a portion of the tree given its father's ID
+     * @param id father's ID
+     * @return tree
+     * @throws SQLException if a database error occurs
+     */
+    public List<Category> getTree(String id) throws SQLException {
+        List<Category> categories = new LinkedList<>();
+        String query = "SELECT ID, Name FROM category WHERE ID LIKE '?%' ORDER BY ID";
+        ResultSet result;
+        //no need for preparing
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, id);
+            result = statement.executeQuery(query);
+            while(result.next()){
+                categories.add(new Category(
+                        result.getString("ID"),
+                        result.getString("Name"), ""));
+            }
+        }
+        return categories;
+    }
+
+    /**
+     * Moves a category under a new father.
+     * @param id category's ID
+     * @param destinationId new father's ID
+     * @throws SQLException if there's a database error
+     * @throws NoSuchCategoryException if the new father doesn't exist
+     */
+    public void updateCategory(String id, String destinationId) throws SQLException, NoSuchCategoryException {
+        List<Category> categories = getTree(id);
+        if(categories.isEmpty()) return;
+        String query = "UPDATE category SET ID = ? WHERE ID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, findNextIdByFather(destinationId));
+            statement.setString(2, id);
+            statement.executeUpdate(query);
+        }
+        categories.remove(0);
+        for(Category c : categories){
+            updateCategory(c.getId(), id);
+        }
+    }
 }
