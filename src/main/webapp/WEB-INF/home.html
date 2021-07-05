@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Category list</h1>
+    <p th:text="${'Nice to see you again ' + session.user}"></p>
+    <table>
+        <tbody>
+            <tr th:each="c : ${tree}">
+                <td th:text="${c.getSpaces()} + ${c.getId()} + ${c.getName()}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <form action="AddCategory" method="POST">
+        <label for="name">New category's name: </label>
+        <input type="text" name="name" id="name" placeholder="Category's name">
+        <label for="father">Father's name: </label>
+        <input type="text" name="father" id="father" placeholder="Category's father">
+        <input type="submit">
+    </form>
+</body>
+</html>

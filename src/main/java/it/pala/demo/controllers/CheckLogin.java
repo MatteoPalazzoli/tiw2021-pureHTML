@@ -17,7 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
-@WebServlet("/CheckLogin")
+@WebServlet(name="CheckLogin", value="/CheckLogin")
 public class CheckLogin extends HttpServlet {
     private String message;
     private Connection connection;
