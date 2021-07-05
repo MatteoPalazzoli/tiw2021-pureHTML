@@ -21,8 +21,6 @@ public class MoveTo extends Controller {
         if(!SessionChecker.isLogged(request.getSession())){
             response.sendRedirect( getServletContext().getContextPath()+LOGIN_PAGE);
         }
-        String name = request.getParameter("name");
-
         CategoryDAO dao = new CategoryDAO(connection);
         List<Category> categories;
         try{
@@ -35,7 +33,7 @@ public class MoveTo extends Controller {
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         ctx.setVariable("tree", categories);
-        ctx.setVariable("name", name);
+        ctx.setVariable("id", request.getParameter("id"));
         templateEngine.process("/moveto.html", ctx, response.getWriter());
 
     }

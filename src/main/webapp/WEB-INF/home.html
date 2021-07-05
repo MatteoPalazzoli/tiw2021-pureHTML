@@ -11,16 +11,17 @@
         <tbody>
             <tr th:each="c : ${tree}">
                 <td>
-                    <div th:text="${c.getHTMLSpaces()} + ${c.getId()} +' '+ ${c.getName()}"></div>
+                    <div th:utext="${c.getHTMLSpaces()} + ${c.getId()} +' '+ ${c.getName()}"></div>
                 </td>
                 <td>
-                    <a th:href="@{/MoveTo(name=${c.getName()})}"> >> move to...</a>
+                    <a th:href="@{/MoveTo(id=${c.getId()})}"> >> move to...</a>
                 </td>
             </tr>
         </tbody>
     </table>
 
     <p th:text="${errorMessage}"></p>
+    <h1>Add a category</h1>
     <form action="AddCategory" method="POST">
         <label for="name">New category's name: </label>
         <input type="text" name="name" id="name" placeholder="Category's name">

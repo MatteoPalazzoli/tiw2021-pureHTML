@@ -15,7 +15,6 @@ public class MoveHere extends Controller {
         if(!SessionChecker.isLogged(request.getSession())){
             response.sendRedirect( getServletContext().getContextPath()+LOGIN_PAGE);
         }
-
     }
 
     @Override
@@ -24,5 +23,7 @@ public class MoveHere extends Controller {
             response.sendRedirect( getServletContext().getContextPath()+LOGIN_PAGE);
         }
 
+        String fromName = request.getParameter("fromname");
+        String toName = request.getParameter("toname");
     }
 }
