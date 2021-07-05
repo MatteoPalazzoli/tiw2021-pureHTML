@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet(name="MoveTo", value="/MoveTo")
 public class MoveTo extends Controller {
@@ -21,6 +22,7 @@ public class MoveTo extends Controller {
         if(!SessionChecker.isLogged(request.getSession())){
             response.sendRedirect( getServletContext().getContextPath()+LOGIN_PAGE);
         }
+        String id = request.getParameter("id");
         CategoryDAO dao = new CategoryDAO(connection);
         List<Category> categories;
         try{
@@ -30,10 +32,18 @@ public class MoveTo extends Controller {
             return;
         }
 
+        //names with the button
+        List<String> names = categories
+                .stream()
+                .filter(c -> c.getId().length()-id.length()<0 || !c.getId().startsWith(id))
+                .map(Category::getName)
+                .collect(Collectors.toList());
+
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         ctx.setVariable("tree", categories);
-        ctx.setVariable("id", request.getParameter("id"));
+        ctx.setVariable("id", id);
+        ctx.setVariable("names", names);
         templateEngine.process("/moveto.html", ctx, response.getWriter());
 
     }

@@ -15,7 +15,7 @@
                 <div th:utext="${c.getHTMLSpaces()} + ${c.getId()} +' '+ ${c.getName()}"></div>
             </td>
             <td>
-                <div th:if="${c.getId().length()-id.length < 0 or !#strings.substring(c.getId(), 0, c.getId().length()-id.length()).equals(id)}">
+                <div th:if="${names.contains(c.getName())}">
                     <input type="hidden" name="toid" th:attr="value=${c.getId()}">
                     <input type="submit" name="submit" th:attr="value=${'move under '+ c.getName()}">
                 </div>
