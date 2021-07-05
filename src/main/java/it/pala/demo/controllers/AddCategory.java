@@ -38,7 +38,8 @@ public class AddCategory extends Controller {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Couldn't add the new "+name+" category.");
             return;
         } catch (NoSuchCategoryException e){
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Category"+father+"doesn't exists.");
+            //fixme redirect to home instead of internal server error
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Category "+father+" doesn't exists.");
             return;
         }
 

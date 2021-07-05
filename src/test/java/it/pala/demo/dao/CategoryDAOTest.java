@@ -54,7 +54,7 @@ class CategoryDAOTest {
     void addNotFirst(){
         try {
             new CategoryDAO(connection).createCategory("Pasta", "Food");
-        } catch (SQLException e) {
+        } catch (SQLException | NoSuchCategoryException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
             fail();
@@ -65,7 +65,7 @@ class CategoryDAOTest {
     void addFirst(){
         try {
             new CategoryDAO(connection).createCategory("F40", "Ferrari");
-        } catch (SQLException e) {
+        } catch (SQLException | NoSuchCategoryException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
             fail();
