@@ -30,6 +30,14 @@ public class Category {
         return result.toString();
     }
 
+    public String getHTMLSpaces(){
+        StringBuilder result = new StringBuilder();
+        for(int i=0; i<id.length(); i++){
+            result.append("&nbsp;");
+        }
+        return result.toString();
+    }
+
     @Override
     public String toString(){
         return id+" "+name;

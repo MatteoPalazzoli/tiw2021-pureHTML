@@ -10,8 +10,11 @@
     <table>
         <tbody>
             <tr th:each="c : ${tree}">
-                <td th:text="${c.getSpaces()} + ${c.getId()} + ${c.getName()}">
-                    <span th:href="@{/MoveTo(name=${c.getName()})}"> > move to...</span>
+                <td>
+                    <div th:text="${c.getHTMLSpaces()} + ${c.getId()} +' '+ ${c.getName()}"></div>
+                </td>
+                <td>
+                    <a th:href="@{/MoveTo(name=${c.getName()})}"> >> move to...</a>
                 </td>
             </tr>
         </tbody>

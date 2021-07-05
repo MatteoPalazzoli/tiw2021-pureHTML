@@ -9,8 +9,14 @@
 <table>
     <tbody>
     <tr th:each="c : ${tree}">
-        <td th:text="${c.getSpaces()} + ${c.getId()} + ${c.getName()}">
-            <div th:if="${c.getName() != name}" th:href="@{/MoveTo(toname=${c.getName()})}"> > move here...</div>
+        <td>
+            <div th:utext="${c.getHTMLSpaces()} + ${c.getId()} +' '+ ${c.getName()}"></div>
+        </td>
+        <td>
+            <div th:if="${c.getName() != name}">
+                <a th:text="move here..." th:href="@{/MoveHere(fromname=name,toname=${c.getName()})}">
+                </a>
+            </div>
         </td>
     </tr>
     </tbody>
