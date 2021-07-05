@@ -30,7 +30,22 @@ public class CategoryDAO {
                 return result.getString("ID");
             }
         } catch (SQLException e){
+            e.printStackTrace();
             throw new NoSuchCategoryException("Category "+name+" doesn't exists.");
+        }
+    }
+
+    public String findNameByID(String id) throws NoSuchCategoryException {
+        String query = "SELECT Name FROM category WHERE ID = ?";
+        try (PreparedStatement pStatement = connection.prepareStatement(query)) {
+            pStatement.setString(1, id);
+            try(ResultSet result = pStatement.executeQuery()){
+                result.next();
+                return result.getString("Name");
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            throw new NoSuchCategoryException("ID "+id+" doesn't exists.");
         }
     }
 
@@ -100,12 +115,17 @@ public class CategoryDAO {
      */
     public List<Category> getTree(String id) throws SQLException {
         List<Category> categories = new LinkedList<>();
-        String query = "SELECT ID, Name FROM category WHERE ID LIKE '?%' ORDER BY ID";
+        String id2 = id
+                .replace("!", "!!")
+                .replace("%", "!%")
+                .replace("_", "!_")
+                .replace("[", "![");
+        String query = "SELECT ID, Name FROM category WHERE ID LIKE ? ESCAPE '!' ORDER BY ID";
         ResultSet result;
         //no need for preparing
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, id);
-            result = statement.executeQuery(query);
+            statement.setString(1, id2+"%");
+            result = statement.executeQuery();
             while(result.next()){
                 categories.add(new Category(
                         result.getString("ID"),
@@ -124,16 +144,18 @@ public class CategoryDAO {
      */
     public void updateCategory(String id, String destinationId) throws SQLException, NoSuchCategoryException {
         List<Category> categories = getTree(id);
+        System.out.println(categories);
         if(categories.isEmpty()) return;
+        String fatherName;
         String query = "UPDATE category SET ID = ? WHERE ID = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, findNextIdByFather(destinationId));
+            fatherName = findNameByID(destinationId);
+            statement.setString(1, findNextIdByFather(fatherName));
             statement.setString(2, id);
-            statement.executeUpdate(query);
+            statement.executeUpdate();
         }
-        categories.remove(0);
         for(Category c : categories){
-            updateCategory(c.getId(), id);
+            updateCategory(c.getId(), findID(fatherName));
         }
     }
 }

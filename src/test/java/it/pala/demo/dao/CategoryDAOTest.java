@@ -77,4 +77,15 @@ class CategoryDAOTest {
     void findInvalidID(){
         assertThrows(NoSuchCategoryException.class, () -> new CategoryDAO(connection).findID("Apes"));
     }
+
+    @Test
+    void update(){
+        try {
+            new CategoryDAO(connection).updateCategory("11", "2");
+        } catch (SQLException | NoSuchCategoryException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            fail();
+        }
+    }
 }
