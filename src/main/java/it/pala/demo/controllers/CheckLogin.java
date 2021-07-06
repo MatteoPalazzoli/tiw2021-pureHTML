@@ -32,8 +32,6 @@ public class CheckLogin extends HttpServlet {
         ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
         templateResolver.setTemplateMode(TemplateMode.HTML);
 
-        //luogo e suffisso delle pagine di template
-        templateResolver.setPrefix("/WEB-INF/");
         templateResolver.setSuffix(".html");
         this.templateEngine = new TemplateEngine();
         this.templateEngine.setTemplateResolver(templateResolver);
@@ -48,9 +46,6 @@ public class CheckLogin extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        out.println();
-
         String user, pwd;
         try {
             user = StringEscapeUtils.escapeJava(request.getParameter("user"));

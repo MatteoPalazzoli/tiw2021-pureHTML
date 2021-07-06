@@ -47,7 +47,7 @@ class CategoryDAOTest {
         }
         assert categories != null;
         for(Category c : categories){
-            System.out.println(c.getSpaces()+c.toString());
+            System.out.println(c.toString());
         }
     }
 

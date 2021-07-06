@@ -45,7 +45,6 @@ public class AddCategory extends Controller {
         } catch (DuplicateCategoryException e){
             errorMsg = "Category "+name+" already exists.";
         }
-        request.getSession().setAttribute("ErrorMsg", errorMsg);
         request.setAttribute("errorMessage", errorMsg);
         ServletContext context = getServletContext();
         RequestDispatcher dispatcher = context.getRequestDispatcher("/Home");

@@ -5,7 +5,9 @@ import it.pala.demo.dao.CategoryDAO;
 import it.pala.demo.utils.SessionChecker;
 import org.thymeleaf.context.WebContext;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +25,7 @@ public class MoveHere extends Controller {
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if(!SessionChecker.isLogged(request.getSession())){
             response.sendRedirect( getServletContext().getContextPath()+LOGIN_PAGE);
         }
@@ -39,13 +41,13 @@ public class MoveHere extends Controller {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to retrieve the tree of categories");
             return;
         } catch (NoSuchCategoryException e) {
-            System.out.println(e.getMessage());
-            //TODO handling
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to retrieve the tree of categories");
+            ServletContext context = getServletContext();
+            request.setAttribute("errorMessage", "Category "+e.getMessage()+" doesn't exists.");
+            RequestDispatcher dispatcher = context.getRequestDispatcher("/Home");
+            dispatcher.forward(request, response);
             return;
         }
 
-        final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
-        templateEngine.process("/Home", ctx, response.getWriter());
+        response.sendRedirect(getServletContext().getContextPath()+"/Home");
     }
 }

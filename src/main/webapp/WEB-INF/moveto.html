@@ -8,20 +8,20 @@
 <h1>Move a category</h1>
 <table>
     <tbody>
-    <form action="MoveHere" method="POST">
-        <input type="hidden" name="fromid" th:attr="value=id">
         <tr th:each="c : ${tree}">
             <td>
                 <div th:utext="${c.getHTMLSpaces()} + ${c.getId()} +' '+ ${c.getName()}"></div>
             </td>
             <td>
                 <div th:if="${names.contains(c.getName())}">
-                    <input type="hidden" name="toid" th:attr="value=${c.getId()}">
-                    <input type="submit" name="submit" th:attr="value=${'move under '+ c.getName()}">
+                    <form action="MoveHere" method="POST">
+                        <input type="hidden" name="fromid" th:attr="value=${id}">
+                        <input type="hidden" name="toid" th:attr="value=${c.getId()}">
+                        <input type="submit" name="submit" th:attr="value=${'move under '+ c.getName()}">
+                    </form>
                 </div>
             </td>
         </tr>
-    </form>
     </tbody>
 </table>
 <p th:text="${errorMessage}"></p>

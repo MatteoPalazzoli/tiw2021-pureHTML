@@ -5,6 +5,8 @@ import it.pala.demo.Exceptions.NoSuchCategoryException;
 import it.pala.demo.beans.Category;
 
 import java.sql.*;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -80,29 +82,28 @@ public class CategoryDAO {
             while(result.next()){
                 categories.add(new Category(
                         result.getString("ID"),
-                        result.getString("Name"), ""));
+                        result.getString("Name")));
             }
         }
         return categories;
     }
 
     public void createCategory(String name, String father) throws SQLException, NoSuchCategoryException, DuplicateCategoryException {
-        String query = "INSERT INTO category (ID, Name, Father) VALUES (?, ?, ?)";
-        if(isPresent(name)) throw new DuplicateCategoryException();
+        String query = "INSERT INTO category (ID, Name) VALUES (?, ?)";
+        if(isPresent(name, false)) throw new DuplicateCategoryException();
         try(PreparedStatement pStatement = connection.prepareStatement(query)){
             pStatement.setString(1, findNextIdByFather(father));
             pStatement.setString(2, name);
-            pStatement.setString(3, father);
             pStatement.executeUpdate();
         }
     }
 
-    private boolean isPresent(String name) throws SQLException {
-        String query = "SELECT * FROM category WHERE Name = ?";
+    private boolean isPresent(String category, boolean isId) throws SQLException {
+        String param = isId ? "ID" : "Name";
+        String query = "SELECT ID FROM category WHERE "+param+" = "+category;
         ResultSet set;
-        try(PreparedStatement s = connection.prepareStatement(query)){
-            s.setString(1, name);
-            set = s.executeQuery();
+        try(Statement s = connection.prepareStatement(query)){
+            set = s.executeQuery(query);
             return set.next();
         }
     }
@@ -113,23 +114,20 @@ public class CategoryDAO {
      * @return tree
      * @throws SQLException if a database error occurs
      */
-    public List<Category> getTree(String id) throws SQLException {
-        List<Category> categories = new LinkedList<>();
+    public List<String> getTree(String id) throws SQLException {
+        List<String> categories = new LinkedList<>();
         String id2 = id
                 .replace("!", "!!")
                 .replace("%", "!%")
                 .replace("_", "!_")
                 .replace("[", "![");
-        String query = "SELECT ID, Name FROM category WHERE ID LIKE ? ESCAPE '!' ORDER BY ID";
+        String query = "SELECT ID FROM category WHERE ID LIKE ? ESCAPE '!' ORDER BY ID";
         ResultSet result;
-        //no need for preparing
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, id2+"%");
             result = statement.executeQuery();
             while(result.next()){
-                categories.add(new Category(
-                        result.getString("ID"),
-                        result.getString("Name"), ""));
+                categories.add(result.getString("ID"));
             }
         }
         return categories;
@@ -143,19 +141,18 @@ public class CategoryDAO {
      * @throws NoSuchCategoryException if the new father doesn't exist
      */
     public void updateCategory(String id, String destinationId) throws SQLException, NoSuchCategoryException {
-        List<Category> categories = getTree(id);
-        System.out.println(categories);
-        if(categories.isEmpty()) return;
-        String fatherName;
-        String query = "UPDATE category SET ID = ? WHERE ID = ?";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            fatherName = findNameByID(destinationId);
-            statement.setString(1, findNextIdByFather(fatherName));
-            statement.setString(2, id);
-            statement.executeUpdate();
-        }
-        for(Category c : categories){
-            updateCategory(c.getId(), findID(fatherName));
+        if(!isPresent(id, true)) throw new NoSuchCategoryException(id);
+        if(!isPresent(destinationId, true)) throw new NoSuchCategoryException(destinationId);
+        List<String> ids = getTree(id);
+        String newFather = findNextIdByFather(findNameByID(destinationId));
+        for(String i : ids){
+            String newId = i.replaceFirst(id, newFather);
+            String query = "UPDATE category SET ID = ? WHERE ID = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, newId);
+                statement.setString(2, i);
+                statement.executeUpdate();
+            }
         }
     }
 }
