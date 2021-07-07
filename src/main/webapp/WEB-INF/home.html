@@ -6,7 +6,11 @@
 </head>
 <body>
     <h1>Category list</h1>
-    <p th:text="${'Nice to see you again, ' + session.user}"></p>
+    <div>
+        <p th:text="${'Nice to see you again, ' + session.user}"></p>
+        <a href="Logout">(logout)</a>
+    </div>
+
     <table>
         <tbody>
             <tr th:each="c : ${tree}">

@@ -5,29 +5,32 @@ import it.pala.demo.dao.UserDAO;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.thymeleaf.context.WebContext;
 
-import java.io.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
 
-@WebServlet(name="CheckLogin", value="/CheckLogin")
+@WebServlet(name="CheckLogin", value={"/CheckLogin"})
 public class CheckLogin extends Controller {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
-        response.getWriter().println("<html><body><h1> get request</h1></body></html>");
+        doPost(request, response);
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         String user, pwd, name = "";
+        if(request.getSession().getAttribute("user") != null){
+            response.sendRedirect(getServletContext().getContextPath()+"/Home");
+            return;
+        }
         try {
             user = StringEscapeUtils.escapeJava(request.getParameter("user"));
             pwd = StringEscapeUtils.escapeJava(request.getParameter("password"));
-            if(emptyField(List.of(user, pwd))){
+            if(emptyField(user) || emptyField(pwd)){
                 final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
                 ctx.setVariable("errorMessage", "Missing or empty credentials.");
                 templateEngine.process("/index.html", ctx, response.getWriter());
@@ -50,6 +53,7 @@ public class CheckLogin extends Controller {
             final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
             ctx.setVariable("errorMessage", "Incorrect username or password");
             templateEngine.process("/index.html", ctx, response.getWriter());
+            return;
         }
 
         request.getSession().setAttribute("user", name);

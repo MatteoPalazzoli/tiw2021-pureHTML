@@ -18,9 +18,6 @@ public class MoveTo extends Controller {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if(notLogged(request.getSession())){
-            response.sendRedirect( getServletContext().getContextPath()+LOGIN_PAGE);
-        }
         String id = request.getParameter("id");
         CategoryDAO dao = new CategoryDAO(connection);
         List<Category> categories;

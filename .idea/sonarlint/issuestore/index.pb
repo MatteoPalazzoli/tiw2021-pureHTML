@@ -41,8 +41,6 @@ Z
 *src/main/java/it/pala/demo/beans/User.java,c\b\cbda545b38ed43c084c2c862f6bb765e0f76f0fa
 [
 +src/main/webapp/WEB-INF/index_it.properties,5\9\598b91015c99552a0c88a84382e5b187500d49e2
-O
-src/main/webapp/WEB-INF/web.xml,2\e\2e22b6edd746fa3dc40ad7276c87c8d87d72a392
 g
 7src/main/java/it/pala/demo/utils/ConnectionHandler.java,3\1\31ece0133a7506c0d7f3d28076c323c1e5d105c8
 m

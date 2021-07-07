@@ -6,8 +6,6 @@ import it.pala.demo.Exceptions.NoSuchCategoryException;
 import it.pala.demo.beans.Category;
 
 import java.sql.*;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,24 +51,22 @@ public class CategoryDAO {
     }
 
     public String findNextIdByFather(String father) throws SQLException, NoSuchCategoryException, IndexOutOfBoundsException {
-        /*String subQuery = "(SELECT ID FROM category WHERE Name = ?)";
-        try (PreparedStatement pStatement = connection.prepareStatement(subQuery)) {
-            pStatement.setString(1, father);
-            //pStatement.toString() starts with some additional information;
-            //So we cut it starting from the 43rd character.
-            subQuery = pStatement.toString().substring(43);
-        }*/
         String query;
-        if(father.equals("0")){
+        ResultSet result;
+        if(father.equals("Root")){
             query = "SELECT CAST(MAX(ID) AS UNSIGNED)+1 AS NextChildID FROM category WHERE ID LIKE '_'";
         } else {
-            query = "SELECT CAST((SELECT MAX(ID) FROM category WHERE ID LIKE CONCAT(" +
-                    "(SELECT ID FROM category WHERE Name = ?), \"_\")) AS UNSIGNED) + 1 AS NextChildID";
+            String subQuery = "(SELECT ID FROM category WHERE Name = ?)";
+            try (PreparedStatement pStatement = connection.prepareStatement(subQuery)) {
+                pStatement.setString(1, father);
+                //pStatement.toString() starts with some additional information;
+                //So we cut it starting from the 43rd character.
+                subQuery = pStatement.toString().substring(43);
+            }
+            query = "SELECT CAST((SELECT MAX(ID) FROM category WHERE ID LIKE CONCAT("+subQuery+", \"_\")) AS UNSIGNED) + 1 AS NextChildID";
         }
-        ResultSet result;
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, father);
-            result = statement.executeQuery();
+        try (Statement statement = connection.prepareStatement(query)) {
+            result = statement.executeQuery(query);
             result.next();
             String id = result.getString("NextChildID");
             if(id==null){ id = findID(father)+"1"; }
@@ -105,6 +101,7 @@ public class CategoryDAO {
     public void createCategory(String name, String father) throws SQLException, NoSuchCategoryException, DuplicateCategoryException, IndexOutOfBoundsException {
         String query = "INSERT INTO category (ID, Name) VALUES (?, ?)";
         if(isPresent(name, false)) throw new DuplicateCategoryException();
+        if(!isPresent(father, false)) throw new NoSuchCategoryException("Category "+father+" doesn't exists.");
         try(PreparedStatement pStatement = connection.prepareStatement(query)){
             pStatement.setString(1, findNextIdByFather(father));
             pStatement.setString(2, name);
@@ -114,7 +111,7 @@ public class CategoryDAO {
 
     private boolean isPresent(String category, boolean isId) throws SQLException {
         String param = isId ? "ID" : "Name";
-        String query = "SELECT ID FROM category WHERE "+param+" = "+category;
+        String query = "SELECT ID FROM category WHERE "+param+" = '"+category+"'";
         ResultSet set;
         try(Statement s = connection.prepareStatement(query)){
             set = s.executeQuery(query);

@@ -55,7 +55,7 @@ class CategoryDAOTest {
     @Test
     void addNotFirst(){
         try {
-            new CategoryDAO(connection).createCategory("Pasta", "Food");
+            new CategoryDAO(connection).createCategory("F50", "Ferrari");
         } catch (SQLException | NoSuchCategoryException | DuplicateCategoryException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

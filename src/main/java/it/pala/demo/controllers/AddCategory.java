@@ -22,18 +22,11 @@ public class AddCategory extends Controller {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if(notLogged(request.getSession())){
-            response.sendRedirect( getServletContext().getContextPath()+LOGIN_PAGE);
-        }
         response.getWriter().println("getted");
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if(notLogged(request.getSession())){
-            response.sendRedirect( getServletContext().getContextPath()+LOGIN_PAGE);
-        }
-
         String name = StringEscapeUtils.escapeJava(request.getParameter("name"));
         String father = StringEscapeUtils.escapeJava(request.getParameter("father"));
         String errorMsg = "";

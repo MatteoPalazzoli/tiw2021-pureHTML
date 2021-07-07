@@ -22,17 +22,10 @@ public class MoveHere extends Controller {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if(notLogged(request.getSession())){
-            response.sendRedirect( getServletContext().getContextPath()+LOGIN_PAGE);
-        }
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if(notLogged(request.getSession())){
-            response.sendRedirect( getServletContext().getContextPath()+LOGIN_PAGE);
-        }
-
         String fromId = StringEscapeUtils.escapeJava(request.getParameter("fromid"));
         String toId = StringEscapeUtils.escapeJava(request.getParameter("toid"));
 

@@ -29,19 +29,14 @@ public class Controller extends HttpServlet {
         connection = ConnectionHandler.getConnection(getServletContext());
     }
 
-    /**
-     * If the user is not logged in (not present in session) redirect to the login
-     * @param session user's session
-     * @return true if logged, false otherwise
-     */
-    public static boolean notLogged(HttpSession session){
-        return session.isNew() || session.getAttribute("user") == null;
-    }
-
     public static boolean emptyField(Collection<String> params){
         for(String s : params){
             if(s == null || s.isEmpty()) return true;
         }
         return false;
+    }
+
+    public static boolean emptyField(String s){
+        return s==null || s.isEmpty();
     }
 }

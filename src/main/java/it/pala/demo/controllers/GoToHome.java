@@ -12,15 +12,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(name="GoToHomePage", value="/Home")
+@WebServlet(name="GoToHomePage", value={"/", "/Home"})
 public class GoToHome extends Controller {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if(notLogged(request.getSession())){
-            response.sendRedirect( getServletContext().getContextPath()+LOGIN_PAGE);
-        }
-
         CategoryDAO dao = new CategoryDAO(connection);
         List<Category> categories;
         try{
