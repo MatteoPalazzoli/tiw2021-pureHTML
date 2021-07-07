@@ -2,15 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Category list</title>
 </head>
 <body>
     <h1>Category list</h1>
-    <div>
-        <p th:text="${'Nice to see you again, ' + session.user}"></p>
-        <a href="Logout">(logout)</a>
-    </div>
-
+        <p>
+            <span th:text="${'Nice to see you again, ' + session.user}"></span>
+            <a href="Logout">(logout)</a>
+        </p>
     <table>
         <tbody>
             <tr th:each="c : ${tree}">
