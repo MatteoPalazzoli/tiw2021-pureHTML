@@ -1,8 +1,9 @@
 package it.pala.demo.controllers;
 
+import it.pala.demo.Exceptions.IllegalMoveException;
 import it.pala.demo.Exceptions.NoSuchCategoryException;
 import it.pala.demo.dao.CategoryDAO;
-import it.pala.demo.utils.SessionChecker;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.thymeleaf.context.WebContext;
 
 import javax.servlet.RequestDispatcher;
@@ -13,25 +14,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name="MoveHere", value="/MoveHere")
 public class MoveHere extends Controller {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if(!SessionChecker.isLogged(request.getSession())){
+        if(notLogged(request.getSession())){
             response.sendRedirect( getServletContext().getContextPath()+LOGIN_PAGE);
         }
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if(!SessionChecker.isLogged(request.getSession())){
+        if(notLogged(request.getSession())){
             response.sendRedirect( getServletContext().getContextPath()+LOGIN_PAGE);
         }
 
-        String fromId = request.getParameter("fromid");
-        String toId = request.getParameter("toid");
+        String fromId = StringEscapeUtils.escapeJava(request.getParameter("fromid"));
+        String toId = StringEscapeUtils.escapeJava(request.getParameter("toid"));
+
+        if(emptyField(new ArrayList<>(List.of(fromId, toId)))){
+            final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
+            ctx.setVariable("errorMessage", "Missing or empty credentials.");
+            templateEngine.process("/WEB-INF/index.html", ctx, response.getWriter());
+        }
 
         CategoryDAO dao = new CategoryDAO(connection);
         try {
@@ -40,9 +49,9 @@ public class MoveHere extends Controller {
             System.out.println(e.getMessage());
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to retrieve the tree of categories");
             return;
-        } catch (NoSuchCategoryException e) {
+        } catch (NoSuchCategoryException | IllegalMoveException | IndexOutOfBoundsException e) {
             ServletContext context = getServletContext();
-            request.setAttribute("errorMessage", "Category "+e.getMessage()+" doesn't exists.");
+            request.setAttribute("errorMessage", e.getMessage());
             RequestDispatcher dispatcher = context.getRequestDispatcher("/Home");
             dispatcher.forward(request, response);
             return;

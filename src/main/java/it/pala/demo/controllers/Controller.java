@@ -8,7 +8,9 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpSession;
 import java.sql.Connection;
+import java.util.Collection;
 
 public class Controller extends HttpServlet {
 
@@ -23,8 +25,23 @@ public class Controller extends HttpServlet {
         templateResolver.setTemplateMode(TemplateMode.HTML);
         this.templateEngine = new TemplateEngine();
         this.templateEngine.setTemplateResolver(templateResolver);
-        templateResolver.setPrefix("/WEB-INF/");
         templateResolver.setSuffix(".html");
         connection = ConnectionHandler.getConnection(getServletContext());
+    }
+
+    /**
+     * If the user is not logged in (not present in session) redirect to the login
+     * @param session user's session
+     * @return true if logged, false otherwise
+     */
+    public static boolean notLogged(HttpSession session){
+        return session.isNew() || session.getAttribute("user") == null;
+    }
+
+    public static boolean emptyField(Collection<String> params){
+        for(String s : params){
+            if(s == null || s.isEmpty()) return true;
+        }
+        return false;
     }
 }

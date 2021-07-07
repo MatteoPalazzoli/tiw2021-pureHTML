@@ -3,7 +3,9 @@ package it.pala.demo.controllers;
 import it.pala.demo.Exceptions.DuplicateCategoryException;
 import it.pala.demo.Exceptions.NoSuchCategoryException;
 import it.pala.demo.dao.CategoryDAO;
-import it.pala.demo.utils.SessionChecker;
+import it.pala.demo.utils.Checker;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.thymeleaf.context.WebContext;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -13,13 +15,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet(name="AddCategory", value="/AddCategory")
 public class AddCategory extends Controller {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if(!SessionChecker.isLogged(request.getSession())){
+        if(notLogged(request.getSession())){
             response.sendRedirect( getServletContext().getContextPath()+LOGIN_PAGE);
         }
         response.getWriter().println("getted");
@@ -27,21 +30,27 @@ public class AddCategory extends Controller {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if(!SessionChecker.isLogged(request.getSession())){
+        if(notLogged(request.getSession())){
             response.sendRedirect( getServletContext().getContextPath()+LOGIN_PAGE);
         }
 
-        String name = request.getParameter("name");
-        String father = request.getParameter("father");
+        String name = StringEscapeUtils.escapeJava(request.getParameter("name"));
+        String father = StringEscapeUtils.escapeJava(request.getParameter("father"));
         String errorMsg = "";
+        if(emptyField(List.of(name, father))){
+            final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
+            ctx.setVariable("errorMessage", "Missing or empty credentials.");
+            templateEngine.process("/index.html", ctx, response.getWriter());
+            return;
+        }
         CategoryDAO dao = new CategoryDAO(connection);
         try {
-            dao.createCategory(name, request.getParameter("father"));
+            dao.createCategory(name, father);
         } catch (SQLException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Couldn't add the new "+name+" category.");
             return;
-        } catch (NoSuchCategoryException e){
-            errorMsg = "Category "+father+" doesn't exists.";
+        } catch (NoSuchCategoryException | IndexOutOfBoundsException e){
+            errorMsg = e.getMessage();
         } catch (DuplicateCategoryException e){
             errorMsg = "Category "+name+" already exists.";
         }

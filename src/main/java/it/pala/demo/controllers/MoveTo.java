@@ -2,7 +2,6 @@ package it.pala.demo.controllers;
 
 import it.pala.demo.beans.Category;
 import it.pala.demo.dao.CategoryDAO;
-import it.pala.demo.utils.SessionChecker;
 import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletContext;
@@ -19,7 +18,7 @@ public class MoveTo extends Controller {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if(!SessionChecker.isLogged(request.getSession())){
+        if(notLogged(request.getSession())){
             response.sendRedirect( getServletContext().getContextPath()+LOGIN_PAGE);
         }
         String id = request.getParameter("id");
@@ -44,7 +43,7 @@ public class MoveTo extends Controller {
         ctx.setVariable("tree", categories);
         ctx.setVariable("id", id);
         ctx.setVariable("names", names);
-        templateEngine.process("/moveto.html", ctx, response.getWriter());
+        templateEngine.process("/WEB-INF/moveto.html", ctx, response.getWriter());
 
     }
 
