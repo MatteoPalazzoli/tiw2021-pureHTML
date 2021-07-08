@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(name="GoToHomePage", value={"/", "/Home"})
+@WebServlet(name="GoToHomePage", value={"/Home"})
 public class GoToHome extends Controller {
 
     @Override

@@ -2,7 +2,7 @@ package it.pala.demo.controllers;
 
 import it.pala.demo.Exceptions.WrongUserException;
 import it.pala.demo.dao.UserDAO;
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.thymeleaf.context.WebContext;
 
 import javax.servlet.annotation.WebServlet;

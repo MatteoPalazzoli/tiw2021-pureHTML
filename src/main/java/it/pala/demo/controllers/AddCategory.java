@@ -3,8 +3,7 @@ package it.pala.demo.controllers;
 import it.pala.demo.Exceptions.DuplicateCategoryException;
 import it.pala.demo.Exceptions.NoSuchCategoryException;
 import it.pala.demo.dao.CategoryDAO;
-import it.pala.demo.utils.Checker;
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.thymeleaf.context.WebContext;
 
 import javax.servlet.RequestDispatcher;

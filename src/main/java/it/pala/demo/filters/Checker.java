@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(filterName="Checker", value={"/*", "/Home", "/AddCategory", "/MoveTo", "/MoveHere", "/Logout"})
+@WebFilter(filterName="Checker", value={"/Home", "/AddCategory", "/MoveTo", "/MoveHere", "/Logout"})
 public class Checker implements Filter {
 
     /**
@@ -38,9 +38,7 @@ public class Checker implements Filter {
         System.out.println("Filter: "+req.getRequestURI()+", by "+req.getSession().getAttribute("user"));
 
         HttpSession s = req.getSession();
-        if (!req.getRequestURI().equals(loginPath)
-                && !req.getRequestURI().equals(checkPath)
-                && (s.isNew() || s.getAttribute("user") == null)) {
+        if(s.isNew() || s.getAttribute("user") == null) {
             res.sendRedirect(loginPath);
             return;
         }

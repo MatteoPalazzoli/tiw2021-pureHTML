@@ -33,8 +33,6 @@ q
 A.idea/libraries/Maven__org_thymeleaf_thymeleaf_3_0_12_RELEASE.xml,c\c\ccd13244e21be17976822b246556a8022fa04958
 p
 @.idea/libraries/Maven__org_unbescape_unbescape_1_1_6_RELEASE.xml,2\4\24df693037c2aca1b6bf992773c33a8c31453fe7
-o
-?.idea/libraries/Maven__org_apache_commons_commons_lang3_3_5.xml,5\8\58b61397a8678e379205502c49bd712571216489
 j
 :.idea/libraries/org_apache_commons_commons_lang3_3_3_2.xml,f\e\fe4309f4893dfebd6781b144b64315291cd2750f
 Z
@@ -47,3 +45,5 @@ m
 =src/main/java/it/pala/demo/Exceptions/WrongUserException.java,b\7\b77b576417ec353142ff9b625be74ea383d7cbfd
 ^
 .src/main/java/it/pala/demo/beans/Category.java,a\4\a4bbf5729fb5aa03a0fe885e17ab70230423bb90
+f
+6src/main/java/it/pala/demo/controllers/Controller.java,3\1\31a0704afb18bd301bb79877ac93f8e90a499986
