@@ -33,12 +33,8 @@ q
 A.idea/libraries/Maven__org_thymeleaf_thymeleaf_3_0_12_RELEASE.xml,c\c\ccd13244e21be17976822b246556a8022fa04958
 p
 @.idea/libraries/Maven__org_unbescape_unbescape_1_1_6_RELEASE.xml,2\4\24df693037c2aca1b6bf992773c33a8c31453fe7
-j
-:.idea/libraries/org_apache_commons_commons_lang3_3_3_2.xml,f\e\fe4309f4893dfebd6781b144b64315291cd2750f
 Z
 *src/main/java/it/pala/demo/beans/User.java,c\b\cbda545b38ed43c084c2c862f6bb765e0f76f0fa
-[
-+src/main/webapp/WEB-INF/index_it.properties,5\9\598b91015c99552a0c88a84382e5b187500d49e2
 g
 7src/main/java/it/pala/demo/utils/ConnectionHandler.java,3\1\31ece0133a7506c0d7f3d28076c323c1e5d105c8
 m
@@ -47,3 +43,19 @@ m
 .src/main/java/it/pala/demo/beans/Category.java,a\4\a4bbf5729fb5aa03a0fe885e17ab70230423bb90
 f
 6src/main/java/it/pala/demo/controllers/Controller.java,3\1\31a0704afb18bd301bb79877ac93f8e90a499986
+O
+src/main/webapp/WEB-INF/web.xml,2\e\2e22b6edd746fa3dc40ad7276c87c8d87d72a392
+J
+src/main/webapp/index.html,1\3\1337d72a3b1928dba82aa5210f5cdc0e88ce895b
+8
+demo.iml,3\a\3a1f3b8d79f7f74ae8ee86cf15078bf944eb62c9
+U
+%.idea/artifacts/demo_war_exploded.xml,4\c\4c8eef7ea084d47839bf6c40cb2f8dcddfebeef3
+s
+C.idea/libraries/Maven__com_google_protobuf_protobuf_java_3_11_4.xml,9\4\943f0a69fdae55baa84614c564e27a9096d825f7
+l
+<.idea/libraries/Maven__mysql_mysql_connector_java_8_0_25.xml,f\6\f68f476631b62e04499d486ec0dbf24f0dc7fb20
+r
+B.idea/libraries/Maven__org_apache_commons_commons_lang3_3_12_0.xml,8\9\896d99c9be6880ce3a634a53b84adc43670df237
+n
+>.idea/libraries/Maven__org_apache_commons_commons_text_1_9.xml,c\2\c228b2c0c06db804351208bc3c8f0f0d20d31049

@@ -17,7 +17,18 @@
                     <div th:utext="${c.getHTMLSpaces()} + ${c.getId()} +' '+ ${c.getName()}"></div>
                 </td>
                 <td>
-                    <a th:href="@{/MoveTo(id=${c.getId()})}"> >> move to...</a>
+                    <div th:if="${names.isEmpty()}">
+                        <a th:href="@{/Home(id=${c.getId()})}"> >> move to...</a>
+                    </div>
+                </td>
+                <td>
+                    <div th:if="${names.contains(c.getName())}">
+                        <form action="MoveCategory" method="POST">
+                            <input type="hidden" name="fromid" th:attr="value=${id}">
+                            <input type="hidden" name="toid" th:attr="value=${c.getId()}">
+                            <input type="submit" name="submit" th:attr="value=${'move under '+ c.getName()}">
+                        </form>
+                    </div>
                 </td>
             </tr>
         </tbody>

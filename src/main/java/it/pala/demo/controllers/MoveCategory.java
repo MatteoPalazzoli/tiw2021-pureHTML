@@ -17,8 +17,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name="MoveHere", value="/MoveHere")
-public class MoveHere extends Controller {
+@WebServlet(name="MoveCategory", value="/MoveCategory")
+public class MoveCategory extends Controller {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

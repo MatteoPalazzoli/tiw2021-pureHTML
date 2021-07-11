@@ -17,12 +17,7 @@ public class CategoryDAO {
         this.connection = connection;
     }
 
-    /**
-     * @param name Name of a category
-     * @return Category's ID
-     * @throws SQLException if there is a database error
-     */
-    public String findID(String name) throws NoSuchCategoryException {
+    private String findID(String name) throws NoSuchCategoryException {
         String query = "SELECT ID FROM category WHERE Name = ?";
         try (PreparedStatement pStatement = connection.prepareStatement(query)) {
             pStatement.setString(1, name);
@@ -36,7 +31,7 @@ public class CategoryDAO {
         }
     }
 
-    public String findNameByID(String id) throws NoSuchCategoryException {
+    private String findNameByID(String id) throws NoSuchCategoryException {
         String query = "SELECT Name FROM category WHERE ID = ?";
         try (PreparedStatement pStatement = connection.prepareStatement(query)) {
             pStatement.setString(1, id);
@@ -50,7 +45,7 @@ public class CategoryDAO {
         }
     }
 
-    public String findNextIdByFather(String father) throws SQLException, NoSuchCategoryException, IndexOutOfBoundsException {
+    private String findNextIdByFather(String father) throws SQLException, NoSuchCategoryException, IndexOutOfBoundsException {
         String query;
         ResultSet result;
         if(father.equals("Root")){
@@ -125,7 +120,7 @@ public class CategoryDAO {
      * @return tree
      * @throws SQLException if a database error occurs
      */
-    public List<String> getTree(String id) throws SQLException {
+    private List<String> getTree(String id) throws SQLException {
         List<String> categories = new LinkedList<>();
         String id2 = id
                 .replace("!", "!!")

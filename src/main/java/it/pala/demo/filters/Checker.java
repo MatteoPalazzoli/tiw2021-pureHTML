@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(filterName="Checker", value={"/Home", "/AddCategory", "/MoveTo", "/MoveHere", "/Logout"})
+@WebFilter(filterName="Checker", value={"/Home", "/AddCategory", "/MoveCategory", "/Logout"})
 public class Checker implements Filter {
 
     /**
