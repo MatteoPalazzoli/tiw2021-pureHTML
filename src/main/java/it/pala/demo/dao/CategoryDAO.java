@@ -105,6 +105,7 @@ public class CategoryDAO {
     }
 
     private boolean isPresent(String category, boolean isId) throws SQLException {
+        if(category == null || category.isEmpty()) return false;
         String param = isId ? "ID" : "Name";
         String query = "SELECT ID FROM category WHERE "+param+" = '"+category+"'";
         ResultSet set;
@@ -149,7 +150,11 @@ public class CategoryDAO {
     public void updateCategory(String id, String destinationId) throws SQLException, NoSuchCategoryException, IllegalMoveException, IndexOutOfBoundsException {
         if(!isPresent(id, true)) throw new NoSuchCategoryException("Category "+id+" doesn't exists.");
         if(!isPresent(destinationId, true)) throw new NoSuchCategoryException("Category "+destinationId+" doesn't exists.");
-        if(!id.equals(destinationId) && destinationId.startsWith(id)) throw new IllegalMoveException("Cannot move a father under one of its children.");
+        if(destinationId.startsWith(id)){
+            if(id.length() != destinationId.length()) throw new IllegalMoveException("Cannot move a father ("+id+") under one of its children ("+destinationId+")");
+            else return; //ids are equal
+        }
+        if(id.equals("0")) throw new IllegalMoveException("Cannot move Root");
         List<String> ids = getTree(id);
         String newFather = findNextIdByFather(findNameByID(destinationId));
         for(String i : ids){

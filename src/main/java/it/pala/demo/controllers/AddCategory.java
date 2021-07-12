@@ -21,7 +21,7 @@ public class AddCategory extends Controller {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.getWriter().println("getted");
+        response.sendRedirect(getServletContext().getContextPath()+"/Home");
     }
 
     @Override
@@ -29,10 +29,11 @@ public class AddCategory extends Controller {
         String name = StringEscapeUtils.escapeJava(request.getParameter("name"));
         String father = StringEscapeUtils.escapeJava(request.getParameter("father"));
         String errorMsg = "";
-        if(emptyField(List.of(name, father))){
-            final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
-            ctx.setVariable("errorMessage", "Missing or empty credentials.");
-            templateEngine.process("/index.html", ctx, response.getWriter());
+        if(emptyField(name) || emptyField(father)){
+            ServletContext context = getServletContext();
+            request.setAttribute("errorMessage", "Missing or empty inputs.");
+            RequestDispatcher dispatcher = context.getRequestDispatcher("/Home");
+            dispatcher.forward(request, response);
             return;
         }
         CategoryDAO dao = new CategoryDAO(connection);

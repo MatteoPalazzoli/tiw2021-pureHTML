@@ -8,9 +8,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpSession;
 import java.sql.Connection;
-import java.util.Collection;
 
 public class Controller extends HttpServlet {
 
@@ -27,13 +25,6 @@ public class Controller extends HttpServlet {
         this.templateEngine.setTemplateResolver(templateResolver);
         templateResolver.setSuffix(".html");
         connection = ConnectionHandler.getConnection(getServletContext());
-    }
-
-    public static boolean emptyField(Collection<String> params){
-        for(String s : params){
-            if(s == null || s.isEmpty()) return true;
-        }
-        return false;
     }
 
     public static boolean emptyField(String s){

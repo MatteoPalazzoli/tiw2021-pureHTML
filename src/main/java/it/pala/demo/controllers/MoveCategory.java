@@ -22,6 +22,7 @@ public class MoveCategory extends Controller {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.sendRedirect(getServletContext().getContextPath()+"/Home");
     }
 
     @Override
@@ -29,10 +30,12 @@ public class MoveCategory extends Controller {
         String fromId = StringEscapeUtils.escapeJava(request.getParameter("fromid"));
         String toId = StringEscapeUtils.escapeJava(request.getParameter("toid"));
 
-        if(emptyField(new ArrayList<>(List.of(fromId, toId)))){
-            final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
-            ctx.setVariable("errorMessage", "Missing or empty credentials.");
-            templateEngine.process("/WEB-INF/index.html", ctx, response.getWriter());
+        if(emptyField(fromId) || emptyField(toId)){
+            ServletContext context = getServletContext();
+            request.setAttribute("errorMessage", "Missing or empty inputs.");
+            RequestDispatcher dispatcher = context.getRequestDispatcher("/Home");
+            dispatcher.forward(request, response);
+            return;
         }
 
         CategoryDAO dao = new CategoryDAO(connection);

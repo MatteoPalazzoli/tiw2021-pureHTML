@@ -41,8 +41,6 @@ m
 =src/main/java/it/pala/demo/Exceptions/WrongUserException.java,b\7\b77b576417ec353142ff9b625be74ea383d7cbfd
 ^
 .src/main/java/it/pala/demo/beans/Category.java,a\4\a4bbf5729fb5aa03a0fe885e17ab70230423bb90
-f
-6src/main/java/it/pala/demo/controllers/Controller.java,3\1\31a0704afb18bd301bb79877ac93f8e90a499986
 O
 src/main/webapp/WEB-INF/web.xml,2\e\2e22b6edd746fa3dc40ad7276c87c8d87d72a392
 8
