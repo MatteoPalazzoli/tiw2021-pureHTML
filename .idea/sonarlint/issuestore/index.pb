@@ -45,8 +45,6 @@ f
 6src/main/java/it/pala/demo/controllers/Controller.java,3\1\31a0704afb18bd301bb79877ac93f8e90a499986
 O
 src/main/webapp/WEB-INF/web.xml,2\e\2e22b6edd746fa3dc40ad7276c87c8d87d72a392
-J
-src/main/webapp/index.html,1\3\1337d72a3b1928dba82aa5210f5cdc0e88ce895b
 8
 demo.iml,3\a\3a1f3b8d79f7f74ae8ee86cf15078bf944eb62c9
 U

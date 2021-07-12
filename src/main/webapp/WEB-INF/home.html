@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/style.css}">
     <title>Category list</title>
 </head>
 <body>
@@ -12,9 +13,22 @@
         </p>
     <table>
         <tbody>
+            <tr>
+                <td>(Root)</td>
+                <td><!----></td>
+                <td>
+                    <div th:if="${!names.isEmpty()}">
+                        <form action="MoveCategory" method="POST">
+                            <input type="hidden" name="fromid" th:attr="value=${id}">
+                            <input type="hidden" name="toid" value="0">
+                            <input type="submit" name="submit" value="move under the Root">
+                        </form>
+                    </div>
+                </td>
+            </tr>
             <tr th:each="c : ${tree}">
                 <td>
-                    <div th:utext="${c.getHTMLSpaces()} + ${c.getId()} +' '+ ${c.getName()}"></div>
+                    <div th:class="${(names.isEmpty() || names.contains(c.getName())) ? 'base' : 'highlighted'}" th:utext="${c.getHTMLSpaces()} + ${c.getId()} +' '+ ${c.getName()}"></div>
                 </td>
                 <td>
                     <div th:if="${names.isEmpty()}">
