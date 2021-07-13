@@ -3,16 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" th:href="@{/tables.css}">
     <title>Category list</title>
 </head>
 <body>
-    <h1>Category list</h1>
-        <p>
-            <span th:text="${'Nice to see you again, ' + session.user}"></span>
-            <a href="Logout">(logout)</a>
-        </p>
-    <table>
-        <tbody>
+<div class="container">
+    <div>
+        <h1 class="leftTitle">Nice to see you again, <span th:text="${session.user}"></span></h1>
+        <a class="logout" href="Logout">Logout</a>
+    </div>
+
+    <div class="clearBoth"></div>
+    <p class="errorMessage" th:text="${errorMessage}"></p>
+    <div class="sideTable">
+        <h2>Move a category</h2>
+        <table class="pure-table pure-table-horizontal">
+            <tbody>
             <tr>
                 <td>(Root)</td>
                 <td><!----></td>
@@ -45,17 +51,21 @@
                     </div>
                 </td>
             </tr>
-        </tbody>
-    </table>
-
-    <p th:text="${errorMessage}"></p>
-    <h1>Add a category</h1>
-    <form action="AddCategory" method="POST">
-        <label for="name">New category's name: </label>
-        <input type="text" name="name" id="name" placeholder="Category's name" required>
-        <label for="father">Father's name: </label>
-        <input type="text" name="father" id="father" placeholder="Category's father" required>
-        <input type="submit">
-    </form>
+            </tbody>
+        </table>
+    </div>
+    <div class="sideForm">
+        <h2>Add a category</h2>
+        <form action="AddCategory" method="POST">
+            <div class="column">
+                <input type="text" name="name" id="name" placeholder="Category's name" required>
+            </div>
+            <div class="column">
+                <input type="text" name="father" id="father" placeholder="Category's father" required>
+            </div>
+            <input class="submitButton" type="submit" value="Add">
+        </form>
+    </div>
+</div>
 </body>
 </html>

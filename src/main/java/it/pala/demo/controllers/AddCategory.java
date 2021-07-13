@@ -4,7 +4,6 @@ import it.pala.demo.Exceptions.DuplicateCategoryException;
 import it.pala.demo.Exceptions.NoSuchCategoryException;
 import it.pala.demo.dao.CategoryDAO;
 import org.apache.commons.text.StringEscapeUtils;
-import org.thymeleaf.context.WebContext;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 @WebServlet(name="AddCategory", value="/AddCategory")
 public class AddCategory extends Controller {

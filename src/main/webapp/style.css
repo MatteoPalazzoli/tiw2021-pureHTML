@@ -1,3 +1,83 @@
 .highlighted {
     color: red;
 }
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.container{
+    overflow: auto;
+    background-color: #E8E8E8;
+    padding: 20px;
+}
+
+.leftTitle{
+    float: left;
+}
+
+.errorMessage {
+    color: red;
+}
+
+.logout {
+    padding: 5px;
+    margin: 20px;
+    background-color: #F66358;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    float: right;
+}
+.logout:hover{
+    opacity: 0.8;
+}
+
+.sideForm {
+    float: right;
+    width: 50%;
+    background-color: #B1CBDC;
+    border-radius: 5px;
+    padding: 20px 40px 40px 40px;
+}
+.sideTable {
+    float:left;
+}
+
+.submitButton {
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 5px;
+    background-color: #04AA6D;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.clearBoth{
+    clear:both;
+}
+
+input[type=text]{
+    padding: 12px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+#addCatSubmit{
+    display: block;
+}
+.submitButton:hover {
+    opacity: 0.8;
+}
+.column{
+    float: left;
+    width: 50%;
+}
+
+#saveButton{
+    margin-left: 20px;
+}
