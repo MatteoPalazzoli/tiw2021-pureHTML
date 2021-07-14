@@ -27,8 +27,9 @@ public class MoveCategory extends Controller {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String fromId = StringEscapeUtils.escapeJava(request.getParameter("fromid"));
-        String toId = StringEscapeUtils.escapeJava(request.getParameter("toid"));
+        request.setCharacterEncoding("UTF-8");
+        String fromId = request.getParameter("fromid");
+        String toId = request.getParameter("toid");
 
         if(emptyField(fromId) || emptyField(toId)){
             ServletContext context = getServletContext();

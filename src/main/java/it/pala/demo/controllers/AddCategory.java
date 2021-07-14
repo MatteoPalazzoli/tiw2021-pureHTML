@@ -24,8 +24,9 @@ public class AddCategory extends Controller {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String name = StringEscapeUtils.escapeJava(request.getParameter("name"));
-        String father = StringEscapeUtils.escapeJava(request.getParameter("father"));
+        request.setCharacterEncoding("UTF-8");
+        String name = request.getParameter("name");
+        String father = request.getParameter("father");
         String errorMsg = "";
         if(emptyField(name) || emptyField(father)){
             ServletContext context = getServletContext();

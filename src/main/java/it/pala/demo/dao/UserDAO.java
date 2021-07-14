@@ -16,10 +16,10 @@ public class UserDAO {
 
     public String checkCredentials(String username, String pwd) throws SQLException, WrongUserException {
         String query = "SELECT  username, password, name FROM user WHERE Username = ? AND Password = ?";
-        try (PreparedStatement pstatement = con.prepareStatement(query)) {
-            pstatement.setString(1, username);
-            pstatement.setString(2, pwd);
-            ResultSet result = pstatement.executeQuery();
+        try (PreparedStatement pStatement = con.prepareStatement(query)) {
+            pStatement.setString(1, username);
+            pStatement.setString(2, pwd);
+            ResultSet result = pStatement.executeQuery();
             if (!result.isBeforeFirst()) // no results, credential check failed
                 throw new WrongUserException();
             else {

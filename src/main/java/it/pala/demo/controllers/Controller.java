@@ -14,13 +14,13 @@ public class Controller extends HttpServlet {
 
     TemplateEngine templateEngine;
     Connection connection;
-    static final String LOGIN_PAGE = "/index.html";
 
     @Override
     public void init() throws ServletException {
         ServletContext servletContext = getServletContext();
         ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
         templateResolver.setTemplateMode(TemplateMode.HTML);
+        templateResolver.setCharacterEncoding("UTF-8");
         this.templateEngine = new TemplateEngine();
         this.templateEngine.setTemplateResolver(templateResolver);
         templateResolver.setSuffix(".html");
@@ -30,4 +30,7 @@ public class Controller extends HttpServlet {
     public static boolean emptyField(String s){
         return s==null || s.isEmpty();
     }
+
+    @Override
+    public void destroy(){}
 }

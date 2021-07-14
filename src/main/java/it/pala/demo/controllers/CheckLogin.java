@@ -22,17 +22,19 @@ public class CheckLogin extends Controller {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
+        request.setCharacterEncoding("UTF-8");
         String user, pwd, name = "";
         if(request.getSession().getAttribute("user") != null){
             response.sendRedirect(getServletContext().getContextPath()+"/Home");
             return;
         }
         try {
-            user = StringEscapeUtils.escapeJava(request.getParameter("user"));
-            pwd = StringEscapeUtils.escapeJava(request.getParameter("password"));
+            user = request.getParameter("user");
+            pwd = request.getParameter("password");
             if(emptyField(user) || emptyField(pwd)){
                 final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
                 ctx.setVariable("errorMessage", "Missing or empty credentials.");
+                response.setCharacterEncoding("UTF-8");
                 templateEngine.process("/index.html", ctx, response.getWriter());
                 return;
             }
@@ -52,6 +54,7 @@ public class CheckLogin extends Controller {
         } catch (WrongUserException e){
             final WebContext ctx = new WebContext(request, response, getServletContext(), request.getLocale());
             ctx.setVariable("errorMessage", "Incorrect username or password");
+            response.setCharacterEncoding("UTF-8");
             templateEngine.process("/index.html", ctx, response.getWriter());
             return;
         }
@@ -59,10 +62,4 @@ public class CheckLogin extends Controller {
         request.getSession().setAttribute("user", name);
         response.sendRedirect(getServletContext().getContextPath()+"/Home");
     }
-
-    @Override
-    public void destroy() {
-
-    }
-
 }

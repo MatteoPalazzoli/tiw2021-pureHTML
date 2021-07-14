@@ -48,6 +48,7 @@ public class GoToHome extends Controller {
         ctx.setVariable("tree", categories);
         ctx.setVariable("names", names);
         ctx.setVariable("id", effId);
+        response.setCharacterEncoding("UTF-8");
         templateEngine.process("/WEB-INF/home.html", ctx, response.getWriter());
     }
 
