@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @WebServlet(name="GoToHomePage", value={"/Home"})
@@ -30,7 +31,8 @@ public class GoToHome extends Controller {
             return;
         }
         String effId;
-        if(id==null){
+        Pattern regExp = Pattern.compile("^\\d+$");
+        if(emptyField(id) || id.equals("0") || !regExp.matcher(id).find()){
             effId="0";
             names = new ArrayList<>();
         } else {

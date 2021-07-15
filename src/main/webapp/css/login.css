@@ -12,6 +12,13 @@ form {
     padding: 20px;
 }
 
+.container{
+    overflow: auto;
+    background-color: #E8E8E8;
+    padding: 20px;
+    text-align: center;
+}
+
 input[type=text], input[type=password] {
     padding: 12px 20px;
     display: inline-block;
@@ -33,12 +40,6 @@ input[type=submit] {
 
 input[type=submit]:hover {
     opacity: 0.8;
-}
-
-.container{
-    overflow: auto;
-    background-color: #E8E8E8;
-    padding: 20px;
 }
 
 .errorMessage{
